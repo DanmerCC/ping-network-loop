@@ -24,9 +24,8 @@ async function run() {
             console.log(time)
             let res = await ping.promise.probe(host);
             
-            let data = { hour: time.getHours(), minute: time.getMinutes(), seconds: time.getSeconds(), host: host, delay: res.time };
+            let data = { time:time.toISOString().split('.')[0].replace("T"," "),hour: time.getHours(), minute: time.getMinutes(), seconds: time.getSeconds(), host: host, delay: res.time };
             writer.write(data);
-            delete res
         }
         writer.end();
         await sleep(1000);
