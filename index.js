@@ -23,7 +23,7 @@ async function run() {
         writerdisconnects = csvWriter({sendHeaders: false})
         writer.pipe(fs.createWriteStream(`network_${time.toISOString().split('T')[0].replaceAll("-","_")}.csv`, { flags: 'a' }));
         writerdisconnects.pipe(fs.createWriteStream(`disconnects_${time.toISOString().split('T')[0].replaceAll("-","_")}.csv`, { flags: 'a' }));
-        
+        verifyPing = []
         for (let host of hosts) {
             console.log(time)
             let res = await ping.promise.probe(host, { timeout:  5});
@@ -39,20 +39,22 @@ async function run() {
             }
         })
         if (filterPing.length > 0) {
-            console.log(typeof rangepivot);
-            if(Array.isArray(rangepivot)){
-                rangepivot[1]=Object.assign({}, time)
+            if(rangepivot!=null){
+                rangepivot.end=time.toISOString()
                 writerdisconnects.write(rangepivot)
                 rangepivot=null
-
+                console.log("conexion recuperada")
+                console.log(time.toISOString())
             }
-
-            console.log('Si hay ping');
         }
         if (filterPing.length == 0) {
-            console.log('No hay ping');
-            if(rangepivot==null){ 
-                rangepivot = [Object.assign({}, time)]
+            if (rangepivot == null) {
+                console.log("desconecion detectada")
+                console.log(time.toISOString())
+                rangepivot = {
+                    start: time.toISOString(),
+                    end:null
+                }
                 
             }
 
