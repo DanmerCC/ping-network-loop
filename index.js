@@ -22,7 +22,8 @@ async function run() {
         writer = csvWriter({sendHeaders: false})
         writerdisconnects = csvWriter({sendHeaders: false})
         writer.pipe(fs.createWriteStream(`network_${time.toISOString().split('T')[0].replaceAll("-","_")}.csv`, { flags: 'a' }));
-        writerdisconnects.pipe(fs.createWriteStream(`disconnects_${time.toISOString().split('T')[0].replaceAll("-","_")}.csv`, { flags: 'a' }));
+        //writerdisconnects.pipe(fs.createWriteStream(`disconnects_${time.toISOString().split('T')[0].replaceAll("-","_")}.csv`, { flags: 'a' }));
+        writerdisconnects.pipe(fs.createWriteStream(`disconnects_.csv`, { flags: 'a' }));
         verifyPing = []
         for (let host of hosts) {
             console.log(time)
